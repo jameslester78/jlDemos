@@ -21,9 +21,7 @@ def getRuns(athleteNumber):
                                      'Age Grade':'ageGrade',\
                                      'PB?':'pb'\
                                      })
-                                                             
-                             
-                                
+                                                                                         
     df['runDate'] = pd.to_datetime(df['runDate'], format = '%d/%m/%Y')
     df["ageGrade"] = df.apply(lambda row: str(row['ageGrade'][0:-1]), axis=1) #remove the final charecter from this field value (%)
     df['ageGrade'] = pd.to_numeric(df['ageGrade'])

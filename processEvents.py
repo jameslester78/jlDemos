@@ -1,3 +1,4 @@
+#quickly ingest the events file, without county data
 
 import sqlite3
 import constants
@@ -37,7 +38,7 @@ def parseEventFile():
     return responseJsonNormalized
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': #we dont want to run this unless we specifically run the file- eg we dont want am import to trigger below code
 
     databaseLocation = constants.databaseLocation
     responseJsonNormalized = parseEventFile()

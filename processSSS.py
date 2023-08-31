@@ -1,7 +1,7 @@
 headers = {'placeholder': ''} #we need to supply a header to get a response, the contents dont matter
 
 import requests, pandas as pd,re
-import constants, processEvents, functions
+import constants, functions
 from scrapy import Selector
 import sqlite3
 
