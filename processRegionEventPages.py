@@ -63,15 +63,22 @@ def processEventPages():
     cursor.execute("SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='previousEvents'")
     #we are going to pull a value out of the db rather than execute a series of commands so we use execute
     
-    tableCount = cursor.fetchall()
+    prevTableCount = cursor.fetchall()
     #store the result of the query
 
-    #print(tableCount[0][0])
+    cursor.execute("SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='currentEvents'")
+    currentTableCount = cursor.fetchall()
+
+    #print(prevTableCount[0][0])
       
+    if currentTableCount[0][0] > 0:
+        cursor.executescript("DROP TABLE IF EXISTS previousEvents; CREATE TABLE  previousEvents AS  SELECT * FROM currentEvents;")
+        #copy the current table to become the previous tale
+
     df.to_sql('currentEvents',conn,if_exists='replace',index=False)
     #upload the data frame to your database
     
-    if tableCount[0][0] > 0: #run these commands if the previousEvents table exists
+    if prevTableCount[0][0] > 0: #run these commands if the previousEvents table exists
         #cursor.executescript("delete from previousEvents where eventname IN ('Wythenshawe parkrun','Wyre Forest parkrun');")
         #used for testing code so there will always be a new Event to report
         #We are not fetching values back, we are running a script so we use executescript rather than execute
@@ -91,8 +98,5 @@ def processEventPages():
             #print (emailBody[:-2])
             functions.sendEmail('New parkruns',emailBody[:-2]) #send the email
         
-    cursor.executescript("DROP TABLE IF EXISTS previousEvents; CREATE TABLE  previousEvents AS  SELECT * FROM currentEvents;")
-    #now we have processed the data lets replace the existing previous Events table
-
 if __name__ == '__main__':
     processEventPages()
